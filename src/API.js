@@ -1,4 +1,5 @@
 export default async function (message) {
+
     return await fetch("https://api.aicloud.sbercloud.ru/public/v1/public_inference/gpt3/predict", {
         method: 'POST',
         headers: {

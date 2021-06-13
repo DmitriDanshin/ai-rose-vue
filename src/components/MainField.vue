@@ -3,10 +3,9 @@
   <div class="py-4">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-      <div class="border-2 border-gray-500 rounded-md h-96 px-4 pt-4 overflow-auto" ref="field">
+      <div class="border-2 border-gray-500 rounded-md h-96 px-4 pt-4 overflow-auto" contenteditable ref="field">
 
-        <p v-for="message in messages" :key="message"> &gt;&gt; {{ message.input }} <br> &gt;&gt; {{ message.output }}
-        </p>
+        {{ messages }}
 
       </div>
 
@@ -42,29 +41,29 @@ export default {
   data() {
     return {
       input: '',
-      messages: [],
+      messages: '',
     }
   },
   methods: {
 
     async sendMessage() {
 
+      const prediction = await getPredictions(this.getTextFromField() + this.input);
 
-      const prediction = await getPredictions(this.input);
-      const output = prediction.predictions;
+      const output = prediction.predictions + " ";
 
-
-      this.messages = [...this.messages, {
-        input: this.input,
-        output: output,
-      }];
-
-
+      this.messages = output;
       this.input = '';
 
       this.normalizeScrollHeight();
 
+
     },
+
+    getTextFromField() {
+      return this.$refs.field.innerText ?? '';
+    },
+
     normalizeScrollHeight() {
       this.$refs.field.scrollTop = this.$refs.field.scrollHeight;
     }
